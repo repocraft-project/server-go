@@ -31,7 +31,10 @@ func (t *DefaultTransferer) UploadPack(
 		return err
 	}
 
-	return transport.UploadPack(ctx, sto, input, output, nil)
+	opts := &transport.UploadPackOptions{
+		StatelessRPC: options.StatelessRPC,
+	}
+	return transport.UploadPack(ctx, sto, input, output, opts)
 }
 
 func (t *DefaultTransferer) ReceivePack(
@@ -46,7 +49,10 @@ func (t *DefaultTransferer) ReceivePack(
 		return err
 	}
 
-	return transport.ReceivePack(ctx, sto, input, output, nil)
+	opts := &transport.ReceivePackOptions{
+		StatelessRPC: options.StatelessRPC,
+	}
+	return transport.ReceivePack(ctx, sto, input, output, opts)
 }
 
 func (t *DefaultTransferer) openRepo(repo string) (storage.Storer, error) {
@@ -60,4 +66,8 @@ func (t *DefaultTransferer) openRepo(repo string) (storage.Storer, error) {
 	}
 
 	return filesystem.NewStorage(fs, cache.NewObjectLRUDefault()), nil
+}
+
+func (t *DefaultTransferer) OpenRepo(repo string) (storage.Storer, error) {
+	return t.openRepo(repo)
 }

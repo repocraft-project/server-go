@@ -23,5 +23,10 @@ type Transferer interface {
 	) error
 }
 
-type UploadPackOptions struct{}
-type ReceivePackOptions struct{}
+type UploadPackOptions struct {
+	StatelessRPC bool
+}
+
+type ReceivePackOptions struct {
+	StatelessRPC bool
+}
