@@ -30,11 +30,12 @@ A Git server is essentially a transport server that provides two core services: 
 ```
 pkg/git/
   fs.go           # FS interface
-  subfs.go        # subfs helper (path prefix wrapper)
+  subfs.go        # subFS helper (path prefix wrapper)
   localfs.go      # LocalFS implementation
   
   object.go       # objectStorage (unexported)
   ref.go          # refStorage (unexported)
+  packfile.go     # packfile encode/decode (unexported)
   transfer.go     # Transferer
 ```
 

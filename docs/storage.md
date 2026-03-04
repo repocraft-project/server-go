@@ -40,14 +40,12 @@ func (s *objectStorage) get(hash Hash) (io.Reader, error)
 func (s *objectStorage) set(hash Hash, data io.Reader) error
 func (s *objectStorage) has(hash Hash) bool
 func (s *objectStorage) iter() (hashIter, error)
-func (s *objectStorage) packfileWriter() (io.WriteCloser, error)
 ```
 
 - **get**: Returns zlib-compressed raw object data
 - **set**: Stores zlib-compressed object data
 - **has**: Checks if object exists
 - **iter**: Iterates over all object hashes
-- **packfileWriter**: Returns writer for creating packfiles
 
 ## refStorage (in ref.go)
 

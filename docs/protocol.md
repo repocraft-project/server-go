@@ -65,7 +65,38 @@ func (t *Transferer) ReceivePack(ctx context.Context, pat string, r io.Reader, w
 
 ## Packfile Handling
 
-Packfile encoding/decoding is handled internally using go-git's packfile package. This is NOT exposed to users—the Transferer handles all packfile operations transparently.
+We implement our own packfile encoding and decoding (in `packfile.go`), independent of go-git. This keeps our FS interface minimal and avoids heavy dependencies.
+
+### Packfile Format
+
+Packfile is stored in `objects/pack/` with `.pack` extension. Format:
+- Header: `PACK` + version (4 bytes) + num objects (4 bytes)
+- Entries: object data (zlib compressed) with type/size info
+- Footer: SHA1 checksum (20 bytes)
+
+### Implementation
+
+Two symmetric functions handle packfile encoding and decoding:
+
+```go
+// encodePackfile encodes objects as a packfile.
+// want: object hashes to include. If nil, encodes all reachable objects (used for repack).
+// Returns the packfile SHA-1 checksum.
+func encodePackfile(w io.Writer, storage *objectStorage, want []Hash) (Hash, error)
+
+// decodePackfile decodes a packfile and stores objects via storage.
+// Returns the packfile SHA-1 checksum.
+func decodePackfile(r io.Reader, storage *objectStorage) (Hash, error)
+```
+
+The Transferer uses these for:
+- **UploadPack**: Call encodePackfile to generate packfile for client
+- **ReceivePack**: Call decodePackfile to parse packfile from client
+
+These functions also support local repack (GC):
+- **Local repack**: Call encodePackfile with want=nil to pack all reachable objects
+
+This is NOT exposed to users—the Transferer handles all packfile operations transparently.
 
 ## pkt-line Format
 
