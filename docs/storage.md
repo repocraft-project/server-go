@@ -36,16 +36,16 @@ type objectStorage struct {
 
 func newObjectStorage(fs FS) *objectStorage
 
-func (s *objectStorage) get(hash Hash) (io.Reader, error)
-func (s *objectStorage) set(hash Hash, data io.Reader) error
-func (s *objectStorage) has(hash Hash) bool
-func (s *objectStorage) iter() (hashIter, error)
+func (s *objectStorage) Get(hash hash) (io.ReadCloser, error)
+func (s *objectStorage) Set(hash hash, data io.Reader) error
+func (s *objectStorage) Has(hash hash) bool
+func (s *objectStorage) Iter() (*hashIter, error)
 ```
 
-- **get**: Returns zlib-compressed raw object data
-- **set**: Stores zlib-compressed object data
-- **has**: Checks if object exists
-- **iter**: Iterates over all object hashes
+- **Get**: Returns zlib-compressed raw object data
+- **Set**: Stores zlib-compressed object data
+- **Has**: Checks if object exists
+- **Iter**: Iterates over all object hashes
 
 ## refStorage (in ref.go)
 
@@ -60,23 +60,33 @@ type refStorage struct {
 
 func newRefStorage(fs FS) *refStorage
 
-func (s *refStorage) get(refName string) (Hash, error)
-func (s *refStorage) set(refName string, hash Hash) error
-func (s *refStorage) delete(refName string) error
-func (s *refStorage) iter() (refIter, error)
-func (s *refStorage) pack() error
+func (s *refStorage) Get(refName string) (hash, error)
+func (s *refStorage) Set(refName string, hash hash) error
+func (s *refStorage) Delete(refName string) error
+func (s *refStorage) Iter() (*refIter, error)
+func (s *refStorage) Pack() error
 ```
 
-- **get**: Returns the hash for a reference
-- **set**: Sets a reference to a hash
-- **delete**: Removes a reference
-- **iter**: Iterates over all references
-- **pack**: Writes all loose refs into packed-refs
+- **Get**: Returns the hash for a reference
+- **Set**: Sets a reference to a hash
+- **Delete**: Removes a reference
+- **Iter**: Iterates over all references
+- **Pack**: Writes all loose refs into packed-refs
 
-## Hash Type
+## hash Type
 
 ```go
-type Hash [20]byte
+type hashType byte
+
+const (
+    algoSHA1 hashType = iota
+    algoSHA256
+)
+
+type hash struct {
+    alg      hashType
+    checksum [32]byte
+}
 ```
 
 ## Usage in Transferer

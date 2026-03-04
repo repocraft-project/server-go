@@ -55,6 +55,13 @@ func (fs *localfs) Rename(src, dst string) error {
 
 func (fs *localfs) Listdir(entry string) ([]string, error) {
 	fullPath := filepath.Join(fs.root, entry)
+	info, err := os.Stat(fullPath)
+	if err != nil {
+		return nil, err
+	}
+	if !info.IsDir() {
+		return nil, ErrNotDirectory
+	}
 	entries, err := os.ReadDir(fullPath)
 	if err != nil {
 		return nil, err

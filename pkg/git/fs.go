@@ -1,6 +1,11 @@
 package git
 
-import "io"
+import (
+	"errors"
+	"io"
+)
+
+var ErrNotDirectory = errors.New("not a directory")
 
 type ReadonlyFile interface {
 	io.Reader
