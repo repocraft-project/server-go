@@ -3,13 +3,13 @@ package repolift
 import "github.com/go-git/go-git/v6/storage"
 
 var (
-	_ storage.Storer = (*storer)(nil)
+	_ storage.Storer = (*fstorer)(nil)
 )
 
-type storer struct {
+type fstorer struct {
 	rootFS FS
 }
 
-func newStorer(rootFS FS) *storer {
-	return &storer{rootFS: rootFS}
+func newStorer(rootFS FS) *fstorer {
+	return &fstorer{rootFS: rootFS}
 }

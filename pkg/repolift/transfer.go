@@ -28,9 +28,9 @@ func NewTransferer(rootFS FS) *Transferer {
 	return &Transferer{rootFS: rootFS}
 }
 
-func (t *Transferer) storer(path string) *fsStorer {
+func (t *Transferer) storer(path string) *fstorer {
 	repoFS := newSubFS(t.rootFS, path)
-	return NewStorer(repoFS)
+	return newStorer(repoFS)
 }
 
 func (t *Transferer) checkRepoExists(path string) error {
