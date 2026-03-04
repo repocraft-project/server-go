@@ -16,8 +16,8 @@ const (
 )
 
 var (
-	uploadPackOpts  = &transport.UploadPackOptions{StatelessRPC: true, AdvertiseRefs: true}
-	receivePackOpts = &transport.ReceivePackOptions{StatelessRPC: true, AdvertiseRefs: true}
+	uploadPackOpts  = &transport.UploadPackOptions{StatelessRPC: true}
+	receivePackOpts = &transport.ReceivePackOptions{StatelessRPC: true}
 )
 
 type Transferer struct {
