@@ -16,7 +16,8 @@ type WriteonlyFile interface {
 
 type FS interface {
 	Create(entry string) error
+	Delete(entry string) error
+	List(entry string) ([]string, error)
 	Reader(entry string) (ReadonlyFile, error)
 	Writer(entry string) (WriteonlyFile, error)
-	Delete(entry string) error
 }
