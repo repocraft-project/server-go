@@ -10,6 +10,11 @@
       "source": "cylixlee/skills",
       "sourceType": "github",
       "computedHash": "12da691169418b8141bc3157885837e7fa0d4fb5befb1cd89a10b9af6b9246cc"
+    },
+    "test-driven-development": {
+      "source": "cylixlee/skills",
+      "sourceType": "github",
+      "computedHash": "5fed87df1140ceaee84cac71f487f103f4192ab02dcd9822a70247a9e4194799"
     }
   }
 }
